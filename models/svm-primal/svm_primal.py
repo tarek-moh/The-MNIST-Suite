@@ -16,7 +16,7 @@ class SVMPrimal:
         for epoch in range(epochs):
             
             errors = 0 
-            
+            print("Training Started...")
             for i in range(self.X.shape[0]): 
                 point = self.X[i]
                 label = self.y[i]
@@ -27,6 +27,7 @@ class SVMPrimal:
                 else:
                     self.w -= learning_rate * (reg * self.w)
 
+            print(f"Epoch {epoch} completed ------- Errors: {errors}")
             if errors == 0: 
                 print(f"Converged early at epoch {epoch}")
                 break
