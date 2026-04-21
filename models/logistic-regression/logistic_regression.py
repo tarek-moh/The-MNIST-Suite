@@ -3,7 +3,7 @@ from sklearn.metrics import roc_curve
 import matplotlib.pyplot as plt
 
 class custom_logistic_regression :
-    def __init__(self,X,Y,size): #constructor ##### i should remove this size var !!
+    def __init__(self,X,Y,size): #constructor
         self.W = np.zeros(size) # initialize the weights (including the bias) as zeros
         self.X = X
         self.Y = Y
@@ -37,46 +37,47 @@ class custom_logistic_regression :
         plt.scatter(FP_rates[best_index], TP_rates[best_index], color='red', s=100, zorder=5,
                     label=f'Optimal Threshold ({opt_Threshold:.2f})')
         plt.plot([0, 1], [0, 1], color='orange', linestyle='--')
-        plt.title('ROC Curve for Custom Logistic Regression')
-        plt.xlabel('False Positive Rate (False Alarms)')
-        plt.ylabel('True Positive Rate (Correct Detections)')
+        plt.title('ROC Curve for my Custom Logistic Regression')
+        plt.xlabel('False Positive Rate')
+        plt.ylabel('True Positive Rate')
         plt.legend()
         plt.grid(True, alpha=0.3)
         plt.show()
         
     #train the model using gradient descent
-    def train_customized(self,_lambda_: float): #msh fhma 7bk lambda tb2a reserved
-        #define the loss func and minimize it using gradient descent 
-        gdsc_iter = 50 #no of iterations over the whole dataset 
+    def train_customized(self, _lambda_: float): 
+        
+        print("Training Started (Stochastic Gradient Descent)...")
+        
+        gdsc_iter = 100
         for iteration in range(gdsc_iter):
-
-            sum_error = 0 
-            misclassifications = 0 # if this doesn't change then terminate(converged early)
+            misclassifications = 0 #track mistakes for early stopping
+            
             for i in range(self.X.shape[0]):
                 xi = self.X[i]
                 yi = self.Y[i]
-                err = self.derv_objective_func(xi,yi)
-                sum_error += err
-
-                raw_score = np.dot(xi, self.W)
-                predicted_class = 1 if raw_score >= 0 else -1
                 
-                if predicted_class != yi:
+                err = self.derv_objective_func(xi, yi) 
+
+                self.W -= _lambda_ * err #update weights every single entry error instead of total/batch error
+                
+                raw_score_instead_of_heavy_comp = np.dot(xi, self.W)
+                predicted_class = 1 if raw_score_instead_of_heavy_comp >= 0 else -1
+                
+                if predicted_class != yi: #error encountered
                     misclassifications += 1
                 
-            print(f"Iteration {iteration} finished")
-            if misclassifications == 0:
-                print(f"Converged early at iteration with weights: {self.W}")
-                break
-            else:
-                self.W -= _lambda_ * sum_error #update weights
-
+            print(f"iteration {iteration} completed with errors: {misclassifications}")
             
-        print("Training completed with weights estimated = ",self.W)
+            #early stop (reached convergence)
+            if misclassifications == 0:
+                print(f"Converged early at iteration: {iteration}")
+                break
+                
+        print("training complete with weights: ", self.W)
         self.estimate_optimal_threshold()
 
 
-    #  iwill specify who is class -1 and who is class 1
     def predict_customized(self,X_test): #classify the test data
         y_predicted = []
         for i in range(X_test.shape[0]):
