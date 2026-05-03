@@ -50,6 +50,7 @@ class custom_logistic_regression :
         print("Training Started (Stochastic Gradient Descent)...")
         
         gdsc_iter = 100
+        misclassification_list = []
         for iteration in range(gdsc_iter):
             misclassifications = 0 #track mistakes for early stopping
             
@@ -66,6 +67,7 @@ class custom_logistic_regression :
                 
                 if predicted_class != yi: #error encountered
                     misclassifications += 1
+            misclassification_list.append(misclassifications)
                 
             print(f"iteration {iteration} completed with errors: {misclassifications}")
             
@@ -76,6 +78,7 @@ class custom_logistic_regression :
                 
         print("training complete with weights: ", self.W)
         self.estimate_optimal_threshold()
+        return (range(len(misclassification_list)),misclassification_list)
 
 
     def predict_customized(self,X_test): #classify the test data
