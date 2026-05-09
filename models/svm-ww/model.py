@@ -5,7 +5,7 @@ class SVM_Multiclass:
     def __init__(self, x_train: pd.DataFrame, y_train: pd.DataFrame):
         self.x_train = x_train.to_numpy()
         self.x_train = np.column_stack((self.x_train, np.ones(self.x_train.shape[0]))) 
-        self.y_train = y_train.to_numpy()
+        self.y_train = y_train.to_numpy(dtype=int)
         
         self.num_classes = len(np.unique(self.y_train)) 
         
@@ -35,6 +35,7 @@ class SVM_Multiclass:
                 # --- WEIGHT UPDATE (Pegasos style) ---
                 # Subtract learning_rate * (Gradient + L2 Regularization Penalty)
                 self.weights -= learning_rate * (gradient_matrix + (regularization * self.weights))
+            print(f"Epoch {epoch+1}/{epochs} completed .......")
 
 
     def predict(self, x_test):
