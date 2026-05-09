@@ -11,7 +11,6 @@ class custom_naive_bayes :
 
     def train(self,X_train,Y_train):
         self.unique_labels = np.unique(Y_train)
-
         for yi in self.unique_labels:
             #get data for this class only
             x_yi = X_train[Y_train == yi]
