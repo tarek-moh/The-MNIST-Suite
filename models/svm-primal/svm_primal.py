@@ -6,7 +6,7 @@ class SVMPrimal:
         self.df = df
         
         raw_X = df.drop(columns='label').to_numpy()
-        self.y = df['label'].to_numpy()
+        self.y = df['label'].to_numpy(dtype=int)
         
         self.X = np.column_stack((raw_X, np.ones(raw_X.shape[0])))
         
@@ -14,11 +14,10 @@ class SVMPrimal:
 
     def train(self, learning_rate: float, epochs: int, reg: float):
         margin_violations = pd.DataFrame(columns=['epoch', 'violations'])
-        
+        print("Training Started...")
         for epoch in range(epochs):
             
             violations = 0 
-            print("Training Started...")
             for i in range(self.X.shape[0]): 
                 point = self.X[i]
                 label = self.y[i]
