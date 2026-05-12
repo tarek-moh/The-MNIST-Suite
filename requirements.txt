@@ -1,0 +1,8 @@
+flask
+numpy
+pillow
+pandas
+torch
+numpy
+torchvision
+collections

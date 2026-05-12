@@ -1,0 +1,44 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #121212;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    text-align: center;
+}
+
+canvas {
+    border: 3px solid white;
+    background: black;
+    cursor: crosshair;
+    border-radius: 10px;
+}
+
+.controls {
+    margin-top: 15px;
+}
+
+button,
+select {
+    padding: 10px 15px;
+    margin: 5px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: none;
+}
+
+button {
+    cursor: pointer;
+}
+
+#result {
+    margin-top: 20px;
+    font-size: 24px;
+    font-weight: bold;
+}
