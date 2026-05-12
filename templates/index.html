@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MNIST Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <h1>MNIST Digit Predictor</h1>
+
+    <canvas id="canvas" width="280" height="280"></canvas>
+
+    <div class="controls">
+        <select id="modelSelect">
+            <option value="model1">Model 1</option>
+            <option value="model2">Model 2</option>
+            <option value="model3">Model 3</option>
+        </select>
+
+        <button onclick="predictDigit()">Predict</button>
+        <button onclick="clearCanvas()">Clear</button>
+    </div>
+
+    <div id="result">
+        Draw a number and click Predict
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
