@@ -6,31 +6,33 @@ class SVMPrimal:
         self.df = df
         
         raw_X = df.drop(columns='label').to_numpy()
-        self.y = df['label'].to_numpy()
+        self.y = df['label'].to_numpy(dtype=int)
         
         self.X = np.column_stack((raw_X, np.ones(raw_X.shape[0])))
         
         self.w = np.zeros(self.X.shape[1])
 
     def train(self, learning_rate: float, epochs: int, reg: float):
+        margin_violations = pd.DataFrame(columns=['epoch', 'violations'])
+        print("Training Started...")
         for epoch in range(epochs):
             
-            errors = 0 
-            print("Training Started...")
+            violations = 0 
             for i in range(self.X.shape[0]): 
                 point = self.X[i]
                 label = self.y[i]
 
                 if label * (self.w @ point) < 1:
                     self.w -= learning_rate * (reg * self.w - label * point)
-                    errors += 1
+                    violations += 1
                 else:
                     self.w -= learning_rate * (reg * self.w)
-
-            print(f"Epoch {epoch} completed ------- Errors: {errors}")
-            if errors == 0: 
+            margin_violations.loc[epoch] = [epoch, violations]
+            print(f"Epoch {epoch} completed ------- Violations: {violations}")
+            if violations == 0: 
                 print(f"Converged early at epoch {epoch}")
                 break
+        return margin_violations
         
     def predict(self, X_test: pd.DataFrame):
         raw_X_test = X_test.to_numpy()
